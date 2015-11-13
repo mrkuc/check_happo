@@ -20,6 +20,7 @@ func CmdMonitor(c *cli.Context) {
 
 	monitor_jsonStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
 	if err != nil {
+		fmt.Printf("Invalid option: %s:%d", agent_host, agent_port)
 		log.Print(err)
 		os.Exit(happo_agent.MONITOR_UNKNOWN)
 	}
@@ -28,6 +29,7 @@ func CmdMonitor(c *cli.Context) {
 		request_type = "proxy"
 		jsonStr, agent_host, agent_port, err = comm.GetProxyJSON(c.StringSlice("proxy"), c.String("host"), c.Int("port"), "monitor", monitor_jsonStr)
 		if err != nil {
+			fmt.Printf("Invalid proxy option: %s:%d", agent_host, agent_port)
 			log.Print(err)
 			os.Exit(happo_agent.MONITOR_UNKNOWN)
 		}
@@ -40,11 +42,13 @@ func CmdMonitor(c *cli.Context) {
 
 	res, err := comm.PostToAgent(agent_host, agent_port, request_type, jsonStr)
 	if err != nil {
+		fmt.Printf("Connection timeout: %s:%d", agent_host, agent_port)
 		log.Print(err)
 		os.Exit(happo_agent.MONITOR_UNKNOWN)
 	}
 	monitor_result, err := parseMonitorJSON(res)
 	if err != nil {
+		fmt.Printf("JSON parse error: %s:%d", agent_host, agent_port)
 		log.Print(err)
 		os.Exit(happo_agent.MONITOR_UNKNOWN)
 	}
