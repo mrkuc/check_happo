@@ -17,6 +17,7 @@ func CmdMonitor(c *cli.Context) {
 	var request_type string
 	var monitor_jsonStr []byte
 	var jsonStr []byte
+	var timeout int
 
 	monitor_jsonStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
 	if err != nil {
@@ -36,6 +37,11 @@ func CmdMonitor(c *cli.Context) {
 		agent_host = c.String("host")
 		agent_port = c.Int("port")
 		jsonStr = monitor_jsonStr
+	}
+
+	timeout = c.Int("timeout")
+	if timeout > 0 {
+		comm.SetHTTPClientTimeout(timeout)
 	}
 
 	res, err := comm.PostToAgent(agent_host, agent_port, request_type, jsonStr)

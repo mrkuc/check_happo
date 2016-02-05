@@ -40,6 +40,10 @@ var Commands = []cli.Command{
 				Name:  "plugin_option, o",
 				Usage: "Plugin Option",
 			},
+			cli.StringFlag{
+				Name:  "timeout, t",
+				Usage: "Connect Timeout",
+			},
 		},
 	},
 
