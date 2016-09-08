@@ -47,12 +47,12 @@ func CmdMonitor(c *cli.Context) {
 	res, err := comm.PostToAgent(agent_host, agent_port, request_type, jsonStr)
 	if err != nil {
 		log.Print(err)
-		os.Exit(happo_agent.MONITOR_UNKNOWN)
+		os.Exit(happo_agent.MONITOR_ERROR)
 	}
 	monitor_result, err := parseMonitorJSON(res)
 	if err != nil {
 		log.Print(err)
-		os.Exit(happo_agent.MONITOR_UNKNOWN)
+		os.Exit(happo_agent.MONITOR_ERROR)
 	}
 
 	fmt.Print(monitor_result.Message)
