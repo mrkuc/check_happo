@@ -1,5 +1,7 @@
 # `check_happo` - Nagios plugin for `happo-agent`
 
+[![wercker status](https://app.wercker.com/status/29388c3fe43b1bb6cfb75b828a70f104/s/ "wercker status")](https://app.wercker.com/project/byKey/29388c3fe43b1bb6cfb75b828a70f104)
+
 ## Description
 
 Call monitoring request helper for [`happo-agent`](https://github.com/heartbeatsjp/happo-agent).
