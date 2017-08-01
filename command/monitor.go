@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
-	"github.com/heartbeatsjp/happo-lib"
-	"github.com/heartbeatsjp/happo-lib/comm"
+	"github.com/heartbeatsjp/check_happo/comm"
+	"github.com/heartbeatsjp/happo-agent/lib"
 )
 
 func CmdMonitor(c *cli.Context) {
@@ -22,7 +22,7 @@ func CmdMonitor(c *cli.Context) {
 	monitor_jsonStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
 	if err != nil {
 		log.Print(err)
-		os.Exit(happo_agent.MONITOR_UNKNOWN)
+		os.Exit(lib.MonitorUnknown)
 	}
 
 	if len(c.StringSlice("proxy")) >= 1 {
@@ -30,7 +30,7 @@ func CmdMonitor(c *cli.Context) {
 		jsonStr, agent_host, agent_port, err = comm.GetProxyJSON(c.StringSlice("proxy"), c.String("host"), c.Int("port"), "monitor", monitor_jsonStr)
 		if err != nil {
 			log.Print(err)
-			os.Exit(happo_agent.MONITOR_UNKNOWN)
+			os.Exit(lib.MonitorUnknown)
 		}
 	} else {
 		request_type = "monitor"
@@ -47,31 +47,31 @@ func CmdMonitor(c *cli.Context) {
 	res, err := comm.PostToAgent(agent_host, agent_port, request_type, jsonStr)
 	if err != nil {
 		log.Print(err)
-		os.Exit(happo_agent.MONITOR_ERROR)
+		os.Exit(lib.MonitorError)
 	}
 	monitor_result, err := parseMonitorJSON(res)
 	if err != nil {
 		log.Print(err)
-		os.Exit(happo_agent.MONITOR_ERROR)
+		os.Exit(lib.MonitorError)
 	}
 
 	fmt.Print(monitor_result.Message)
-	os.Exit(monitor_result.Return_Value)
+	os.Exit(monitor_result.ReturnValue)
 }
 
 func getMonitorJSON(plugin_name string, plugin_option string) ([]byte, error) {
-	monitor_request := happo_agent.MonitorRequest{
-		Api_Key:       "",
-		Plugin_Name:   plugin_name,
-		Plugin_Option: plugin_option,
+	monitor_request := lib.MonitorRequest{
+		APIKey:       "",
+		PluginName:   plugin_name,
+		PluginOption: plugin_option,
 	}
 	data, err := json.Marshal(monitor_request)
 
 	return data, err
 }
 
-func parseMonitorJSON(jsonStr string) (happo_agent.MonitorResponse, error) {
-	var m happo_agent.MonitorResponse
+func parseMonitorJSON(jsonStr string) (lib.MonitorResponse, error) {
+	var m lib.MonitorResponse
 	err := json.Unmarshal([]byte(jsonStr), &m)
 	return m, err
 }

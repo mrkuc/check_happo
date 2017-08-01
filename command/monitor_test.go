@@ -3,7 +3,7 @@ package command
 import (
 	"testing"
 
-	"github.com/heartbeatsjp/happo-lib"
+	"github.com/heartbeatsjp/happo-agent/lib"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -11,7 +11,7 @@ import (
 const REQUEST_JSON_STR = "{\"apikey\":\"\",\"plugin_name\":\"plugin\",\"plugin_option\":\"option\"}"
 const RESPONSE_JSON_STR = "{\"return_value\":0,\"message\":\"test\"}"
 
-var RESPONSE_DATA = happo_agent.MonitorResponse{Return_Value: 0, Message: "test"}
+var RESPONSE_DATA = lib.MonitorResponse{ReturnValue: 0, Message: "test"}
 
 func TestGetMonitorJSON1(t *testing.T) {
 	ret, err := getMonitorJSON("plugin", "option")

@@ -6,7 +6,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/heartbeatsjp/check_happo/command"
-	"github.com/heartbeatsjp/happo-lib"
+	"github.com/heartbeatsjp/happo-agent/lib"
 )
 
 var GlobalFlags = []cli.Flag{}
@@ -24,7 +24,7 @@ var Commands = []cli.Command{
 			},
 			cli.IntFlag{
 				Name:  "port, P",
-				Value: happo_agent.DEFAULT_AGENT_PORT,
+				Value: lib.DEFAULT_AGENT_PORT,
 				Usage: "Port number",
 			},
 			cli.StringSliceFlag{

@@ -2,10 +2,6 @@ package: github.com/heartbeatsjp/check_happo
 import:
 - package: github.com/codegangsta/cli
   version: 1.18.1
-- package: github.com/heartbeatsjp/happo-lib
-  version: 0.9.3
-  subpackages:
-  - comm
 testImport:
 - package: github.com/stretchr/testify
   version: 1.1.3
