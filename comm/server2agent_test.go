@@ -30,11 +30,11 @@ func TestGetProxyJSON1(t *testing.T) {
 
 	jsonStr, agentHost, agentPort, err := GetProxyJSON(ProxyHosts, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
-	assert.EqualValues(t, agentHost, "192.168.0.1")
-	assert.EqualValues(t, agentPort, lib.DefaultAgentPort)
+	assert.EqualValues(t, "192.168.0.1", agentHost)
+	assert.EqualValues(t, lib.DefaultAgentPort, agentPort)
 
 	json.Unmarshal(jsonStr, &jsonData)
-	assert.EqualValues(t, jsonData, ProxyRequest)
+	assert.EqualValues(t, ProxyRequest, jsonData)
 }
 
 func TestGetProxyJSON2(t *testing.T) {
@@ -48,11 +48,11 @@ func TestGetProxyJSON2(t *testing.T) {
 
 	jsonStr, agentHost, agentPort, err := GetProxyJSON(ProxyHosts, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
-	assert.EqualValues(t, agentHost, "192.168.0.1")
-	assert.EqualValues(t, agentPort, lib.DefaultAgentPort)
+	assert.EqualValues(t, "192.168.0.1", agentHost)
+	assert.EqualValues(t, lib.DefaultAgentPort, agentPort)
 
 	json.Unmarshal(jsonStr, &jsonData)
-	assert.EqualValues(t, jsonData, ProxyRequest)
+	assert.EqualValues(t, ProxyRequest, jsonData)
 }
 
 func TestPostToAgent1(t *testing.T) {
@@ -74,7 +74,7 @@ func TestPostToAgent1(t *testing.T) {
 
 func TestPostToAgent2(t *testing.T) {
 	jsonStr, err := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
-	assert.EqualValues(t, jsonStr, "")
+	assert.EqualValues(t, "", jsonStr)
 	assert.NotNil(t, err)
 }
 
@@ -91,6 +91,6 @@ func TestPostToAgent3(t *testing.T) {
 	port, _ := strconv.Atoi(found[3])
 
 	jsonStr, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
-	assert.EqualValues(t, jsonStr, "{}\n")
+	assert.EqualValues(t, "{}\n", jsonStr)
 	assert.NotNil(t, err)
 }

@@ -16,12 +16,12 @@ var ResponseData = lib.MonitorResponse{ReturnValue: 0, Message: "test"}
 func TestGetMonitorJSON1(t *testing.T) {
 	ret, err := getMonitorJSON("plugin", "option")
 	jsonStr := string(ret)
-	assert.EqualValues(t, jsonStr, RequestJSONStr)
+	assert.EqualValues(t, RequestJSONStr, jsonStr)
 	assert.Nil(t, err)
 }
 
 func TestParseMonitorJSON1(t *testing.T) {
 	ret, err := parseMonitorJSON(ResponseJSONStr)
-	assert.EqualValues(t, ret, ResponseData)
+	assert.EqualValues(t, ResponseData, ret)
 	assert.Nil(t, err)
 }
