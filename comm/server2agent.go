@@ -40,7 +40,7 @@ func GetProxyJSON(proxy_hosts []string, host string, port int, request_type stri
 			return nil, "", 0, err
 		}
 	} else {
-		agent_port = lib.DEFAULT_AGENT_PORT
+		agent_port = lib.DefaultAgentPort
 	}
 
 	// Step 2 or later

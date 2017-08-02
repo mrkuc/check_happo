@@ -24,7 +24,7 @@ var Commands = []cli.Command{
 			},
 			cli.IntFlag{
 				Name:  "port, P",
-				Value: lib.DEFAULT_AGENT_PORT,
+				Value: lib.DefaultAgentPort,
 				Usage: "Port number",
 			},
 			cli.StringSliceFlag{

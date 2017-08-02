@@ -15,7 +15,7 @@ import (
 )
 
 const HOST = "10.0.0.1"
-const PORT = lib.DEFAULT_AGENT_PORT
+const PORT = lib.DefaultAgentPort
 const METHOD = "TEST"
 const JSON = "{\"test\":100}"
 
@@ -31,7 +31,7 @@ func TestGetProxyJSON1(t *testing.T) {
 	json_str, agent_host, agent_port, err := GetProxyJSON(PROXY_HOSTS, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
 	assert.EqualValues(t, agent_host, "192.168.0.1")
-	assert.EqualValues(t, agent_port, lib.DEFAULT_AGENT_PORT)
+	assert.EqualValues(t, agent_port, lib.DefaultAgentPort)
 
 	json.Unmarshal(json_str, &json_data)
 	assert.EqualValues(t, json_data, PROXY_REQUEST)
@@ -49,7 +49,7 @@ func TestGetProxyJSON2(t *testing.T) {
 	json_str, agent_host, agent_port, err := GetProxyJSON(PROXY_HOSTS, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
 	assert.EqualValues(t, agent_host, "192.168.0.1")
-	assert.EqualValues(t, agent_port, lib.DEFAULT_AGENT_PORT)
+	assert.EqualValues(t, agent_port, lib.DefaultAgentPort)
 
 	json.Unmarshal(json_str, &json_data)
 	assert.EqualValues(t, json_data, PROXY_REQUEST)
