@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -17,46 +16,48 @@ import (
 
 // --- Global Variables
 // See http://golang.org/pkg/net/http/#Client
-var tls_config = &tls.Config{
+var tlsConfig = &tls.Config{
 	InsecureSkipVerify: true,
 	MinVersion:         tls.VersionTLS12,
 }
 var tr = &http.Transport{
-	TLSClientConfig: tls_config,
+	TLSClientConfig: tlsConfig,
 }
 var _httpClient = &http.Client{Transport: tr, Timeout: 60 * time.Second} //default timeout 60 sec
 
-func GetProxyJSON(proxy_hosts []string, host string, port int, request_type string, proxy_jsonStr []byte) ([]byte, string, int, error) {
-	var agent_host string
-	var agent_port int
+// GetProxyJSON returns Marshal-ed ProxyRequest in []byte
+func GetProxyJSON(proxyHosts []string, host string, port int, requestType string, proxyJSONStr []byte) ([]byte, string, int, error) {
+	var agentHost string
+	var agentPort int
 	var err error
 
 	// Step 1
-	agent_hostport := strings.Split(proxy_hosts[0], ":")
-	agent_host = agent_hostport[0]
-	if len(agent_hostport) == 2 {
-		agent_port, err = strconv.Atoi(agent_hostport[1])
+	agentHostport := strings.Split(proxyHosts[0], ":")
+	agentHost = agentHostport[0]
+	if len(agentHostport) == 2 {
+		agentPort, err = strconv.Atoi(agentHostport[1])
 		if err != nil {
 			return nil, "", 0, err
 		}
 	} else {
-		agent_port = lib.DefaultAgentPort
+		agentPort = lib.DefaultAgentPort
 	}
 
 	// Step 2 or later
-	proxy_hosts = proxy_hosts[1:]
-	proxy_hosts = append(proxy_hosts, fmt.Sprintf("%s:%d", host, port))
+	proxyHosts = proxyHosts[1:]
+	proxyHosts = append(proxyHosts, fmt.Sprintf("%s:%d", host, port))
 
-	proxy_request := lib.ProxyRequest{
-		ProxyHostPort: proxy_hosts,
-		RequestType:   request_type,
-		RequestJSON:   proxy_jsonStr,
+	proxyRequest := lib.ProxyRequest{
+		ProxyHostPort: proxyHosts,
+		RequestType:   requestType,
+		RequestJSON:   proxyJSONStr,
 	}
-	jsonData, _ := json.Marshal(proxy_request)
+	jsonData, _ := json.Marshal(proxyRequest)
 
-	return jsonData, agent_host, agent_port, nil
+	return jsonData, agentHost, agentPort, nil
 }
 
+// PostToAgent do HTTPS request and returns result
 func PostToAgent(host string, port int, method string, jsonData []byte) (string, error) {
 	uri := fmt.Sprintf("https://%s:%d/%s", host, port, method)
 	log := Logger()
@@ -77,11 +78,12 @@ func PostToAgent(host string, port int, method string, jsonData []byte) (string,
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return string(body[:]), errors.New(fmt.Sprintf("HTTP status error: %d", resp.StatusCode))
+		return string(body[:]), fmt.Errorf("HTTP status error: %d", resp.StatusCode)
 	}
 	return string(body[:]), nil
 }
 
+// SetHTTPClientTimeout set timeout of httpClient
 func SetHTTPClientTimeout(timeout int) {
 	_httpClient.Timeout = time.Duration(timeout) * time.Second
 }

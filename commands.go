@@ -9,8 +9,10 @@ import (
 	"github.com/heartbeatsjp/happo-agent/lib"
 )
 
+// GlobalFlags are global level options
 var GlobalFlags = []cli.Flag{}
 
+// Commands is list of subcommand
 var Commands = []cli.Command{
 
 	{
@@ -55,6 +57,7 @@ var Commands = []cli.Command{
 	},
 }
 
+// CommandNotFound implements action when subcommand not found
 func CommandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
 	os.Exit(2)

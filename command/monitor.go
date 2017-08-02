@@ -11,32 +11,33 @@ import (
 	"github.com/heartbeatsjp/happo-agent/lib"
 )
 
+// CmdMonitor implements `monitor` subcommand
 func CmdMonitor(c *cli.Context) {
-	var agent_host string
-	var agent_port int
-	var request_type string
-	var monitor_jsonStr []byte
+	var agentHost string
+	var agentPort int
+	var requestType string
+	var monitorJSONStr []byte
 	var jsonStr []byte
 	var timeout int
 
-	monitor_jsonStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
+	monitorJSONStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
 	if err != nil {
 		log.Print(err)
 		os.Exit(lib.MonitorUnknown)
 	}
 
 	if len(c.StringSlice("proxy")) >= 1 {
-		request_type = "proxy"
-		jsonStr, agent_host, agent_port, err = comm.GetProxyJSON(c.StringSlice("proxy"), c.String("host"), c.Int("port"), "monitor", monitor_jsonStr)
+		requestType = "proxy"
+		jsonStr, agentHost, agentPort, err = comm.GetProxyJSON(c.StringSlice("proxy"), c.String("host"), c.Int("port"), "monitor", monitorJSONStr)
 		if err != nil {
 			log.Print(err)
 			os.Exit(lib.MonitorUnknown)
 		}
 	} else {
-		request_type = "monitor"
-		agent_host = c.String("host")
-		agent_port = c.Int("port")
-		jsonStr = monitor_jsonStr
+		requestType = "monitor"
+		agentHost = c.String("host")
+		agentPort = c.Int("port")
+		jsonStr = monitorJSONStr
 	}
 
 	timeout = c.Int("timeout")
@@ -44,28 +45,28 @@ func CmdMonitor(c *cli.Context) {
 		comm.SetHTTPClientTimeout(timeout)
 	}
 
-	res, err := comm.PostToAgent(agent_host, agent_port, request_type, jsonStr)
+	res, err := comm.PostToAgent(agentHost, agentPort, requestType, jsonStr)
 	if err != nil {
 		log.Print(err)
 		os.Exit(lib.MonitorError)
 	}
-	monitor_result, err := parseMonitorJSON(res)
+	monitorResult, err := parseMonitorJSON(res)
 	if err != nil {
 		log.Print(err)
 		os.Exit(lib.MonitorError)
 	}
 
-	fmt.Print(monitor_result.Message)
-	os.Exit(monitor_result.ReturnValue)
+	fmt.Print(monitorResult.Message)
+	os.Exit(monitorResult.ReturnValue)
 }
 
-func getMonitorJSON(plugin_name string, plugin_option string) ([]byte, error) {
-	monitor_request := lib.MonitorRequest{
+func getMonitorJSON(pluginName string, pluginOption string) ([]byte, error) {
+	monitorRequest := lib.MonitorRequest{
 		APIKey:       "",
-		PluginName:   plugin_name,
-		PluginOption: plugin_option,
+		PluginName:   pluginName,
+		PluginOption: pluginOption,
 	}
-	data, err := json.Marshal(monitor_request)
+	data, err := json.Marshal(monitorRequest)
 
 	return data, err
 }

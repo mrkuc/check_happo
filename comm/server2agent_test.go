@@ -20,39 +20,39 @@ const METHOD = "TEST"
 const JSON = "{\"test\":100}"
 
 func TestGetProxyJSON1(t *testing.T) {
-	PROXY_HOSTS := []string{"192.168.0.1"}
-	var json_data lib.ProxyRequest
-	PROXY_REQUEST := lib.ProxyRequest{
+	ProxyHosts := []string{"192.168.0.1"}
+	var jsonData lib.ProxyRequest
+	ProxyRequest := lib.ProxyRequest{
 		ProxyHostPort: []string{fmt.Sprintf("%s:%d", HOST, PORT)},
 		RequestType:   METHOD,
 		RequestJSON:   ([]byte)(JSON),
 	}
 
-	json_str, agent_host, agent_port, err := GetProxyJSON(PROXY_HOSTS, HOST, PORT, "TEST", ([]byte(JSON)))
+	jsonStr, agentHost, agentPort, err := GetProxyJSON(ProxyHosts, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
-	assert.EqualValues(t, agent_host, "192.168.0.1")
-	assert.EqualValues(t, agent_port, lib.DefaultAgentPort)
+	assert.EqualValues(t, agentHost, "192.168.0.1")
+	assert.EqualValues(t, agentPort, lib.DefaultAgentPort)
 
-	json.Unmarshal(json_str, &json_data)
-	assert.EqualValues(t, json_data, PROXY_REQUEST)
+	json.Unmarshal(jsonStr, &jsonData)
+	assert.EqualValues(t, jsonData, ProxyRequest)
 }
 
 func TestGetProxyJSON2(t *testing.T) {
-	PROXY_HOSTS := []string{"192.168.0.1", "172.16.0.1"}
-	var json_data lib.ProxyRequest
-	PROXY_REQUEST := lib.ProxyRequest{
+	ProxyHosts := []string{"192.168.0.1", "172.16.0.1"}
+	var jsonData lib.ProxyRequest
+	ProxyRequest := lib.ProxyRequest{
 		ProxyHostPort: []string{"172.16.0.1", fmt.Sprintf("%s:%d", HOST, PORT)},
 		RequestType:   METHOD,
 		RequestJSON:   ([]byte)(JSON),
 	}
 
-	json_str, agent_host, agent_port, err := GetProxyJSON(PROXY_HOSTS, HOST, PORT, "TEST", ([]byte(JSON)))
+	jsonStr, agentHost, agentPort, err := GetProxyJSON(ProxyHosts, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
-	assert.EqualValues(t, agent_host, "192.168.0.1")
-	assert.EqualValues(t, agent_port, lib.DefaultAgentPort)
+	assert.EqualValues(t, agentHost, "192.168.0.1")
+	assert.EqualValues(t, agentPort, lib.DefaultAgentPort)
 
-	json.Unmarshal(json_str, &json_data)
-	assert.EqualValues(t, json_data, PROXY_REQUEST)
+	json.Unmarshal(jsonStr, &jsonData)
+	assert.EqualValues(t, jsonData, ProxyRequest)
 }
 
 func TestPostToAgent1(t *testing.T) {
@@ -67,14 +67,14 @@ func TestPostToAgent1(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	json_str, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
-	assert.NotNil(t, json_str)
+	jsonStr, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	assert.NotNil(t, jsonStr)
 	assert.Nil(t, err)
 }
 
 func TestPostToAgent2(t *testing.T) {
-	json_str, err := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
-	assert.EqualValues(t, json_str, "")
+	jsonStr, err := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
+	assert.EqualValues(t, jsonStr, "")
 	assert.NotNil(t, err)
 }
 
@@ -90,7 +90,7 @@ func TestPostToAgent3(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	json_str, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
-	assert.EqualValues(t, json_str, "{}\n")
+	jsonStr, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	assert.EqualValues(t, jsonStr, "{}\n")
 	assert.NotNil(t, err)
 }
