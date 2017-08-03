@@ -1,8 +1,9 @@
 package comm
 
 import (
-	"github.com/Sirupsen/logrus"
 	"os"
+
+	"github.com/Sirupsen/logrus"
 )
 
 var log *logrus.Logger
