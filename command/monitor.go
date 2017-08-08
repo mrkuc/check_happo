@@ -8,7 +8,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/heartbeatsjp/check_happo/comm"
-	"github.com/heartbeatsjp/happo-agent/lib"
+	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
 // CmdMonitor implements `monitor` subcommand
@@ -23,7 +23,7 @@ func CmdMonitor(c *cli.Context) {
 	monitorJSONStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
 	if err != nil {
 		log.Print(err)
-		os.Exit(lib.MonitorUnknown)
+		os.Exit(halib.MonitorUnknown)
 	}
 
 	if len(c.StringSlice("proxy")) >= 1 {
@@ -31,7 +31,7 @@ func CmdMonitor(c *cli.Context) {
 		jsonStr, agentHost, agentPort, err = comm.GetProxyJSON(c.StringSlice("proxy"), c.String("host"), c.Int("port"), "monitor", monitorJSONStr)
 		if err != nil {
 			log.Print(err)
-			os.Exit(lib.MonitorUnknown)
+			os.Exit(halib.MonitorUnknown)
 		}
 	} else {
 		requestType = "monitor"
@@ -48,12 +48,12 @@ func CmdMonitor(c *cli.Context) {
 	res, err := comm.PostToAgent(agentHost, agentPort, requestType, jsonStr)
 	if err != nil {
 		log.Print(err)
-		os.Exit(lib.MonitorError)
+		os.Exit(halib.MonitorError)
 	}
 	monitorResult, err := parseMonitorJSON(res)
 	if err != nil {
 		log.Print(err)
-		os.Exit(lib.MonitorError)
+		os.Exit(halib.MonitorError)
 	}
 
 	fmt.Print(monitorResult.Message)
@@ -61,7 +61,7 @@ func CmdMonitor(c *cli.Context) {
 }
 
 func getMonitorJSON(pluginName string, pluginOption string) ([]byte, error) {
-	monitorRequest := lib.MonitorRequest{
+	monitorRequest := halib.MonitorRequest{
 		APIKey:       "",
 		PluginName:   pluginName,
 		PluginOption: pluginOption,
@@ -71,8 +71,8 @@ func getMonitorJSON(pluginName string, pluginOption string) ([]byte, error) {
 	return data, err
 }
 
-func parseMonitorJSON(jsonStr string) (lib.MonitorResponse, error) {
-	var m lib.MonitorResponse
+func parseMonitorJSON(jsonStr string) (halib.MonitorResponse, error) {
+	var m halib.MonitorResponse
 	err := json.Unmarshal([]byte(jsonStr), &m)
 	return m, err
 }

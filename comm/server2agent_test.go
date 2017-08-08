@@ -11,18 +11,18 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/heartbeatsjp/happo-agent/lib"
+	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
 const HOST = "10.0.0.1"
-const PORT = lib.DefaultAgentPort
+const PORT = halib.DefaultAgentPort
 const METHOD = "TEST"
 const JSON = "{\"test\":100}"
 
 func TestGetProxyJSON1(t *testing.T) {
 	ProxyHosts := []string{"192.168.0.1"}
-	var jsonData lib.ProxyRequest
-	ProxyRequest := lib.ProxyRequest{
+	var jsonData halib.ProxyRequest
+	ProxyRequest := halib.ProxyRequest{
 		ProxyHostPort: []string{fmt.Sprintf("%s:%d", HOST, PORT)},
 		RequestType:   METHOD,
 		RequestJSON:   ([]byte)(JSON),
@@ -31,7 +31,7 @@ func TestGetProxyJSON1(t *testing.T) {
 	jsonStr, agentHost, agentPort, err := GetProxyJSON(ProxyHosts, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
 	assert.EqualValues(t, "192.168.0.1", agentHost)
-	assert.EqualValues(t, lib.DefaultAgentPort, agentPort)
+	assert.EqualValues(t, halib.DefaultAgentPort, agentPort)
 
 	json.Unmarshal(jsonStr, &jsonData)
 	assert.EqualValues(t, ProxyRequest, jsonData)
@@ -39,8 +39,8 @@ func TestGetProxyJSON1(t *testing.T) {
 
 func TestGetProxyJSON2(t *testing.T) {
 	ProxyHosts := []string{"192.168.0.1", "172.16.0.1"}
-	var jsonData lib.ProxyRequest
-	ProxyRequest := lib.ProxyRequest{
+	var jsonData halib.ProxyRequest
+	ProxyRequest := halib.ProxyRequest{
 		ProxyHostPort: []string{"172.16.0.1", fmt.Sprintf("%s:%d", HOST, PORT)},
 		RequestType:   METHOD,
 		RequestJSON:   ([]byte)(JSON),
@@ -49,7 +49,7 @@ func TestGetProxyJSON2(t *testing.T) {
 	jsonStr, agentHost, agentPort, err := GetProxyJSON(ProxyHosts, HOST, PORT, "TEST", ([]byte(JSON)))
 	assert.Nil(t, err)
 	assert.EqualValues(t, "192.168.0.1", agentHost)
-	assert.EqualValues(t, lib.DefaultAgentPort, agentPort)
+	assert.EqualValues(t, halib.DefaultAgentPort, agentPort)
 
 	json.Unmarshal(jsonStr, &jsonData)
 	assert.EqualValues(t, ProxyRequest, jsonData)

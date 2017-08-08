@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/heartbeatsjp/happo-agent/lib"
+	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
 // --- Global Variables
@@ -40,14 +40,14 @@ func GetProxyJSON(proxyHosts []string, host string, port int, requestType string
 			return nil, "", 0, err
 		}
 	} else {
-		agentPort = lib.DefaultAgentPort
+		agentPort = halib.DefaultAgentPort
 	}
 
 	// Step 2 or later
 	proxyHosts = proxyHosts[1:]
 	proxyHosts = append(proxyHosts, fmt.Sprintf("%s:%d", host, port))
 
-	proxyRequest := lib.ProxyRequest{
+	proxyRequest := halib.ProxyRequest{
 		ProxyHostPort: proxyHosts,
 		RequestType:   requestType,
 		RequestJSON:   proxyJSONStr,

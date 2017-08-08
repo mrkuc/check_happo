@@ -6,7 +6,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/heartbeatsjp/check_happo/command"
-	"github.com/heartbeatsjp/happo-agent/lib"
+	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
 // GlobalFlags are global level options
@@ -26,7 +26,7 @@ var Commands = []cli.Command{
 			},
 			cli.IntFlag{
 				Name:  "port, P",
-				Value: lib.DefaultAgentPort,
+				Value: halib.DefaultAgentPort,
 				Usage: "Port number",
 			},
 			cli.StringSliceFlag{
