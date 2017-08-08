@@ -2,6 +2,9 @@ package: github.com/heartbeatsjp/check_happo
 import:
 - package: github.com/codegangsta/cli
   version: 1.18.1
+- package: github.com/heartbeatsjp/happo-agent
+  subpackages:
+  - halib
 testImport:
 - package: github.com/stretchr/testify
   version: 1.1.3
