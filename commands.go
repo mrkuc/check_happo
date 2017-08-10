@@ -6,11 +6,13 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/heartbeatsjp/check_happo/command"
-	"github.com/heartbeatsjp/happo-lib"
+	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
+// GlobalFlags are global level options
 var GlobalFlags = []cli.Flag{}
 
+// Commands is list of subcommand
 var Commands = []cli.Command{
 
 	{
@@ -24,7 +26,7 @@ var Commands = []cli.Command{
 			},
 			cli.IntFlag{
 				Name:  "port, P",
-				Value: happo_agent.DEFAULT_AGENT_PORT,
+				Value: halib.DefaultAgentPort,
 				Usage: "Port number",
 			},
 			cli.StringSliceFlag{
@@ -55,6 +57,7 @@ var Commands = []cli.Command{
 	},
 }
 
+// CommandNotFound implements action when subcommand not found
 func CommandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
 	os.Exit(2)
