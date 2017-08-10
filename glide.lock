@@ -1,14 +1,14 @@
 hash: c275e5a0c0515990a42a46f025d30d266dd02a31b1580709cfdc0918bb05e659
-updated: 2017-08-08T17:55:48.993059556+09:00
+updated: 2017-08-10T09:22:07.37582796+09:00
 imports:
 - name: github.com/codegangsta/cli
   version: a14d7d367bc02b1f57d88de97926727f2d936387
 - name: github.com/heartbeatsjp/happo-agent
-  version: 5156fc1b6e3e1cd2c7930b5184f1599fa7cab625
+  version: 88cd7abca3e550285cc03db2a74d7d4928f6270f
   subpackages:
   - halib
 - name: github.com/Sirupsen/logrus
-  version: 3ec0642a7fb6488f65b06f9040adc67e3990296a
+  version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
 - name: golang.org/x/sys
   version: c200b10b5d5e122be351b67af224adc6128af5bf
   subpackages:
