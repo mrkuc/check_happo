@@ -8,6 +8,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/heartbeatsjp/check_happo/comm"
+	"github.com/heartbeatsjp/check_happo/util"
 	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
@@ -19,6 +20,10 @@ func CmdMonitor(c *cli.Context) {
 	var monitorJSONStr []byte
 	var jsonStr []byte
 	var timeout int
+
+	if c.Bool("verbose") {
+		util.LoggerLevelDebug()
+	}
 
 	monitorJSONStr, err := getMonitorJSON(c.String("plugin_name"), c.String("plugin_option"))
 	if err != nil {

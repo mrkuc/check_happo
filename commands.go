@@ -46,6 +46,10 @@ var Commands = []cli.Command{
 				Name:  "timeout, t",
 				Usage: "Connect Timeout",
 			},
+			cli.BoolFlag{
+				Name:  "verbose, v",
+				Usage: "verbose output",
+			},
 		},
 	},
 
