@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/heartbeatsjp/check_happo/util"
 	"github.com/heartbeatsjp/happo-agent/halib"
 )
 
@@ -60,17 +61,20 @@ func GetProxyJSON(proxyHosts []string, host string, port int, requestType string
 // PostToAgent do HTTPS request and returns result
 func PostToAgent(host string, port int, method string, jsonData []byte) (string, error) {
 	uri := fmt.Sprintf("https://%s:%d/%s", host, port, method)
-	log := Logger()
+	log := util.Logger()
 	log.Debug("Request: ", uri)
 
 	req, err := http.NewRequest("POST", uri, bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Connection", "close")
+	log.Debug("Request struct:\n", util.DumpStruct(req))
 
 	resp, err := _httpClient.Do(req)
 	if err != nil {
 		return "", err
 	}
 
+	log.Debug("Response struct:\n", util.DumpStruct(resp))
 	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {

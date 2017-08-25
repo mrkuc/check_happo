@@ -1,9 +1,10 @@
-package comm
+package util
 
 import (
 	"os"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/davecgh/go-spew/spew"
 )
 
 var log *logrus.Logger
@@ -37,4 +38,16 @@ func LoggerLevelInfo() {
 // LoggerLevelError set level to Error
 func LoggerLevelError() {
 	log.Level = logrus.ErrorLevel
+}
+
+// DumpStruct dump struct to one line string
+func DumpStruct(a ...interface{}) string {
+	spew.Config = spew.ConfigState{
+		Indent:                  "\t",
+		DisableMethods:          true,
+		DisablePointerMethods:   true,
+		DisablePointerAddresses: true,
+		DisableCapacities:       true,
+	}
+	return spew.Sdump(a)
 }

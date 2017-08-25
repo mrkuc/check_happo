@@ -1,8 +1,12 @@
-hash: c275e5a0c0515990a42a46f025d30d266dd02a31b1580709cfdc0918bb05e659
-updated: 2017-08-10T09:22:07.37582796+09:00
+hash: 8c6a5c45419e5fe3e535894a47dc227f9bb6acc04c51f7f6a3114fae567e62b7
+updated: 2017-08-24T15:15:30.434481153+09:00
 imports:
 - name: github.com/codegangsta/cli
   version: a14d7d367bc02b1f57d88de97926727f2d936387
+- name: github.com/davecgh/go-spew
+  version: 346938d642f2ec3594ed81d874461961cd0faa76
+  subpackages:
+  - spew
 - name: github.com/heartbeatsjp/happo-agent
   version: 88cd7abca3e550285cc03db2a74d7d4928f6270f
   subpackages:
@@ -10,14 +14,10 @@ imports:
 - name: github.com/Sirupsen/logrus
   version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
 - name: golang.org/x/sys
-  version: c200b10b5d5e122be351b67af224adc6128af5bf
+  version: 30de6d19a3bd89a5f38ae4028e23aaa5582648af
   subpackages:
   - unix
 testImports:
-- name: github.com/davecgh/go-spew
-  version: 2df174808ee097f90d259e432cc04442cf60be21
-  subpackages:
-  - spew
 - name: github.com/pmezard/go-difflib
   version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
   subpackages:
