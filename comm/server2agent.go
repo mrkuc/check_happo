@@ -58,8 +58,8 @@ func GetProxyJSON(proxyHosts []string, host string, port int, requestType string
 	return jsonData, agentHost, agentPort, nil
 }
 
-// PostToAgent do HTTPS request and returns result
-func PostToAgent(host string, port int, method string, jsonData []byte) (string, error) {
+// PostToAgent do HTTPS request and returns HTTP response body, HTTP response status code, communication error, internal error
+func PostToAgent(host string, port int, method string, jsonData []byte) (string, int, error, error) {
 	uri := fmt.Sprintf("https://%s:%d/%s", host, port, method)
 	log := util.Logger()
 	log.Debug("Request: ", uri)
@@ -71,20 +71,21 @@ func PostToAgent(host string, port int, method string, jsonData []byte) (string,
 
 	resp, err := _httpClient.Do(req)
 	if err != nil {
-		return "", err
+		return "", 0, err, nil
 	}
 
 	log.Debug("Response struct:\n", util.DumpStruct(resp))
 	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
-		return "", err
+		return "", 0, nil, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return string(body[:]), fmt.Errorf("HTTP status error: %d", resp.StatusCode)
+		return string(body[:]), resp.StatusCode, fmt.Errorf("happo-agent returns %d", resp.StatusCode), nil
 	}
-	return string(body[:]), nil
+
+	return string(body[:]), resp.StatusCode, nil, nil
 }
 
 // SetHTTPClientTimeout set timeout of httpClient
