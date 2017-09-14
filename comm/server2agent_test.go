@@ -67,13 +67,13 @@ func TestPostToAgent1(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	jsonStr, _, err, _ := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
 	assert.NotNil(t, jsonStr)
 	assert.Nil(t, err)
 }
 
 func TestPostToAgent2(t *testing.T) {
-	jsonStr, _, err, _ := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
 	assert.EqualValues(t, "", jsonStr)
 	assert.NotNil(t, err)
 }
@@ -90,7 +90,7 @@ func TestPostToAgent3(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	jsonStr, _, err, _ := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
 	assert.EqualValues(t, "{}\n", jsonStr)
 	assert.NotNil(t, err)
 }
@@ -107,7 +107,7 @@ func TestPostToAgent4(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	jsonStr, _, err, _ := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
 	assert.EqualValues(t, "{}\n", jsonStr)
 	assert.NotNil(t, err)
 }

@@ -67,19 +67,20 @@ func cmdMonitor(verbose bool, pluginName, pluginOption string, proxy []string, h
 		comm.SetHTTPClientTimeout(timeout)
 	}
 
-	responseBody, responseStatusCode, communicationError, internalError := comm.PostToAgent(agentHost, agentPort, requestType, jsonStr)
+	responseBody, responseStatusCode, err := comm.PostToAgent(agentHost, agentPort, requestType, jsonStr)
 
-	if internalError != nil {
-		return fmt.Sprintf(localErrorMessageFormat, internalError.Error()), halib.MonitorError
-	}
-	if communicationError != nil {
+	if err != nil {
+		if internalError, ok := err.(comm.InternalRuntimeError); ok {
+			return fmt.Sprintf(localErrorMessageFormat, internalError.Error()), halib.MonitorError
+		}
 		// connection failed or responseStatusCode != 200
 		if responseStatusCode == http.StatusGatewayTimeout {
-			return fmt.Sprintf(remoteUnknownMessageFormat, communicationError.Error()), halib.MonitorUnknown
+			return fmt.Sprintf(remoteUnknownMessageFormat, err.Error()), halib.MonitorUnknown
 		}
-		msg := fmt.Sprintf("%s %s", communicationError.Error(), responseBody)
+		msg := fmt.Sprintf("%s %s", err.Error(), responseBody)
 		return fmt.Sprintf(remoteErrorMessageFormat, msg), halib.MonitorError
 	}
+
 	monitorResult, err := parseMonitorJSON(responseBody)
 	if err != nil {
 		return fmt.Sprintf(localErrorMessageFormat, err.Error()), halib.MonitorError
@@ -87,9 +88,8 @@ func cmdMonitor(verbose bool, pluginName, pluginOption string, proxy []string, h
 
 	if responseStatusCode == http.StatusOK {
 		return monitorResult.Message, monitorResult.ReturnValue
-	} else {
-		return fmt.Sprintf(remoteErrorMessageFormat, monitorResult.Message), halib.MonitorError
 	}
+	return fmt.Sprintf(remoteErrorMessageFormat, monitorResult.Message), halib.MonitorError
 }
 
 func getMonitorJSON(pluginName string, pluginOption string) ([]byte, error) {
