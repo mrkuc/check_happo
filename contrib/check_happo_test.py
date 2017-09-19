@@ -17,8 +17,12 @@ python check_happo_test.py | sort -n
 - run on CentOS 7 + happo-agent
     - happo-agent listen 0.0.0.0
     - 127.0.1.1 can reach to happo-agent
-- 192.168.0.1 leads to timeout
+- 8.8.8.8:6777 leads to timeout
 """
+
+import sys
+reload(sys)
+sys.setdefaultencoding("utf8")
 
 import subprocess
 import shlex
@@ -82,24 +86,24 @@ def main():
          'ERROR(happo-agent): happo-agent returns 403 Access Denied', 2),
         ('monitor -X 127.0.1.1 -H 127.0.0.1 -p check_procs -o ""',
          'ERROR(happo-agent): happo-agent returns 403 Access Denied', 2),
-        ('monitor -H 192.168.0.1 -p check_procs -o ""',
-         'ERROR(happo-agent): Post https://192.168.0.1:6777/monitor: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
-        ('monitor -X 127.0.0.1 -H 192.168.0.1 -p check_procs -o ""',
+        ('monitor -H 8.8.8.8 -p check_procs -o ""',
+         'ERROR(happo-agent): Post https://8.8.8.8:6777/monitor: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
+        ('monitor -X 127.0.0.1 -H 8.8.8.8 -p check_procs -o ""',
          'ERROR(happo-agent): Post https://127.0.0.1:6777/proxy: net/http: request canceled (Client.Timeout exceeded while awaiting headers)', 2),
-        ('monitor -X 192.168.0.1 -H 127.0.0.1 -p check_procs -o ""',
-         'ERROR(happo-agent): Post https://192.168.0.1:6777/proxy: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
-        ('monitor -H 192.168.0.1 -p check_procs -o "" -t 1',
-         'ERROR(happo-agent): Post https://192.168.0.1:6777/monitor: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
-        ('monitor -X 127.0.0.1 -H 192.168.0.1 -p check_procs -o "" -t 1',
+        ('monitor -X 8.8.8.8 -H 127.0.0.1 -p check_procs -o ""',
+         'ERROR(happo-agent): Post https://8.8.8.8:6777/proxy: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
+        ('monitor -H 8.8.8.8 -p check_procs -o "" -t 1',
+         'ERROR(happo-agent): Post https://8.8.8.8:6777/monitor: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
+        ('monitor -X 127.0.0.1 -H 8.8.8.8 -p check_procs -o "" -t 1',
          'ERROR(happo-agent): Post https://127.0.0.1:6777/proxy: net/http: request canceled (Client.Timeout exceeded while awaiting headers)', 2),
-        ('monitor -X 192.168.0.1 -H 127.0.0.1 -p check_procs -o "" -t 1',
-         'ERROR(happo-agent): Post https://192.168.0.1:6777/proxy: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
-        ('monitor -H 192.168.0.1 -p check_procs -o "" -t 300',
-         re.compile('ERROR\(happo-agent\): Post https://192.168.0.1:6777/monitor: dial tcp 192.168.0.1:6777: getsockopt:.*'), 2),
-        ('monitor -X 127.0.0.1 -H 192.168.0.1 -p check_procs -o "" -t 300',
+        ('monitor -X 8.8.8.8 -H 127.0.0.1 -p check_procs -o "" -t 1',
+         'ERROR(happo-agent): Post https://8.8.8.8:6777/proxy: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)', 2),
+        ('monitor -H 8.8.8.8 -p check_procs -o "" -t 300',
+         re.compile('ERROR\(happo-agent\): Post https://8.8.8.8:6777/monitor: dial tcp 8.8.8.8:6777: getsockopt:.*'), 2),
+        ('monitor -X 127.0.0.1 -H 8.8.8.8 -p check_procs -o "" -t 300',
          'UNKNOWN(happo-agent): happo-agent returns 504', 3),
-        ('monitor -X 192.168.0.1 -H 127.0.0.1 -p check_procs -o "" -t 300',
-         re.compile('ERROR\(happo-agent\): Post https://192.168.0.1:6777/proxy: dial tcp 192.168.0.1:6777: getsockopt:.*'), 2),
+        ('monitor -X 8.8.8.8 -H 127.0.0.1 -p check_procs -o "" -t 300',
+         re.compile('ERROR\(happo-agent\): Post https://8.8.8.8:6777/proxy: dial tcp 8.8.8.8:6777: getsockopt:.*'), 2),
     ]
 
     processes = []
