@@ -67,13 +67,13 @@ func TestPostToAgent1(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	jsonStr, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
 	assert.NotNil(t, jsonStr)
 	assert.Nil(t, err)
 }
 
 func TestPostToAgent2(t *testing.T) {
-	jsonStr, err := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent("localhost", 12345, METHOD, ([]byte(JSON)))
 	assert.EqualValues(t, "", jsonStr)
 	assert.NotNil(t, err)
 }
@@ -90,7 +90,24 @@ func TestPostToAgent3(t *testing.T) {
 	host := found[2]
 	port, _ := strconv.Atoi(found[3])
 
-	jsonStr, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	jsonStr, _, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
+	assert.EqualValues(t, "{}\n", jsonStr)
+	assert.NotNil(t, err)
+}
+
+func TestPostToAgent4(t *testing.T) {
+	ts := httptest.NewTLSServer(
+		http.HandlerFunc(
+			func(w http.ResponseWriter, r *http.Request) {
+				http.Error(w, "{}", http.StatusInternalServerError)
+			}))
+	defer ts.Close()
+	re, _ := regexp.Compile("([a-z]+)://([A-Za-z0-9.]+):([0-9]+)(.*)")
+	found := re.FindStringSubmatch(ts.URL)
+	host := found[2]
+	port, _ := strconv.Atoi(found[3])
+
+	jsonStr, _, err := PostToAgent(host, port, METHOD, ([]byte(JSON)))
 	assert.EqualValues(t, "{}\n", jsonStr)
 	assert.NotNil(t, err)
 }

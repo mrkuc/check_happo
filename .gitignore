@@ -3,3 +3,4 @@
 check_happo
 vendor/
 .wercker/
+coverage.out
