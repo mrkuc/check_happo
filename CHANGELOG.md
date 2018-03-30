@@ -1,3 +1,7 @@
+### 0.9.5 (Fri Mar 30 18:17:57 2018 +0900)
+
+- Merge pull request #10 from shiimaxx/fix-output-message (Fri Mar 30 18:15:45 2018 +0900) [f859aba](https://github.com/heartbeatsjp/check_happo/commit/f859aba801a4e579fff92346776026785669af47)
+
 ### 0.9.4 (Tue Sep 19 13:28:53 2017 +0900)
 
 - Merge pull request #6 from heartbeatsjp/refactoring (Thu Aug 10 18:04:12 2017 +0900) e88d16b
