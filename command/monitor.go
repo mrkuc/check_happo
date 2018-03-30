@@ -77,7 +77,7 @@ func cmdMonitor(verbose bool, pluginName, pluginOption string, proxy []string, h
 		if responseStatusCode == http.StatusGatewayTimeout {
 			return fmt.Sprintf(remoteUnknownMessageFormat, err.Error()), halib.MonitorUnknown
 		}
-		msg := fmt.Sprintf("%s %s", err.Error(), responseBody)
+		msg := fmt.Sprintf("%s", err.Error())
 		return fmt.Sprintf(remoteErrorMessageFormat, msg), halib.MonitorError
 	}
 
